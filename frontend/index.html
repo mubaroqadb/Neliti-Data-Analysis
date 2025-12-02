@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Data Analysis - Platform Analisis Data Riset</title>
+    <meta name="description" content="Platform analisis data riset interaktif dengan bantuan AI untuk peneliti">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="loading-spinner"></div>
+        <p>Memproses...</p>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo" onclick="navigateTo('home')">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5"/>
+                    <path d="M2 12l10 5 10-5"/>
+                </svg>
+                <span>Research Data Analysis</span>
+            </a>
+            <div class="nav-links" id="nav-links">
+                <a href="#" onclick="navigateTo('home')" class="nav-link active" data-page="home">Beranda</a>
+                <a href="#" onclick="navigateTo('dashboard')" class="nav-link" data-page="dashboard">Dashboard</a>
+                <a href="#" onclick="navigateTo('projects')" class="nav-link" data-page="projects">Proyek</a>
+            </div>
+            <div class="nav-actions">
+                <div id="auth-buttons" class="auth-buttons">
+                    <button class="btn btn-secondary" onclick="navigateTo('login')">Masuk</button>
+                    <button class="btn btn-primary" onclick="navigateTo('register')">Daftar</button>
+                </div>
+                <div id="user-menu" class="user-menu hidden">
+                    <button class="user-menu-trigger" onclick="toggleUserMenu()">
+                        <span id="user-name">User</span>
+                        <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <div class="user-menu-dropdown hidden" id="user-dropdown">
+                        <a href="#" onclick="navigateTo('profile')">Profil</a>
+                        <a href="#" onclick="logout()">Keluar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- Home Page -->
+        <section id="page-home" class="page active">
+            <div class="hero-section">
+                <div class="hero-content">
+                    <h1>Analisis Data Riset dengan Bantuan AI</h1>
+                    <p>Platform interaktif untuk membantu peneliti mengolah dan menganalisis data riset secara efisien dengan rekomendasi metode statistik berbasis AI.</p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary btn-lg" onclick="navigateTo('register')">Mulai Sekarang</button>
+                        <button class="btn btn-secondary btn-lg" onclick="navigateTo('about')">Pelajari Lebih Lanjut</button>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="hero-chart-container">
+                        <canvas id="hero-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="features-section">
+                <h2>Fitur Utama</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="16" y1="13" x2="8" y2="13"/>
+                                <line x1="16" y1="17" x2="8" y2="17"/>
+                            </svg>
+                        </div>
+                        <h3>Upload Data</h3>
+                        <p>Upload file data penelitian dalam format CSV, Excel, atau JSON dengan mudah.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                                <line x1="12" y1="17" x2="12.01" y2="17"/>
+                            </svg>
+                        </div>
+                        <h3>Rekomendasi AI</h3>
+                        <p>Dapatkan rekomendasi metode analisis statistik yang sesuai dari AI berdasarkan konteks penelitian.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="20" x2="18" y2="10"/>
+                                <line x1="12" y1="20" x2="12" y2="4"/>
+                                <line x1="6" y1="20" x2="6" y2="14"/>
+                            </svg>
+                        </div>
+                        <h3>Visualisasi</h3>
+                        <p>Lihat hasil analisis dalam bentuk grafik dan chart yang mudah dipahami.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="7 10 12 15 17 10"/>
+                                <line x1="12" y1="15" x2="12" y2="3"/>
+                            </svg>
+                        </div>
+                        <h3>Ekspor Laporan</h3>
+                        <p>Ekspor hasil analisis dalam format PDF, CSV, atau JSON untuk laporan penelitian.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Login Page -->
+        <section id="page-login" class="page">
+            <div class="auth-container">
+                <div class="auth-card">
+                    <h2>Masuk ke Akun</h2>
+                    <form id="login-form" onsubmit="handleLogin(event)">
+                        <div class="form-group">
+                            <label for="login-email">Email</label>
+                            <input type="email" id="login-email" name="email" required placeholder="nama@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="login-password">Password</label>
+                            <input type="password" id="login-password" name="password" required placeholder="Masukkan password">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Masuk</button>
+                    </form>
+                    <p class="auth-footer">Belum punya akun? <a href="#" onclick="navigateTo('register')">Daftar sekarang</a></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Register Page -->
+        <section id="page-register" class="page">
+            <div class="auth-container">
+                <div class="auth-card">
+                    <h2>Buat Akun Baru</h2>
+                    <form id="register-form" onsubmit="handleRegister(event)">
+                        <div class="form-group">
+                            <label for="register-name">Nama Lengkap</label>
+                            <input type="text" id="register-name" name="full_name" required placeholder="Nama lengkap Anda">
+                        </div>
+                        <div class="form-group">
+                            <label for="register-email">Email</label>
+                            <input type="email" id="register-email" name="email" required placeholder="nama@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="register-password">Password</label>
+                            <input type="password" id="register-password" name="password" required minlength="8" placeholder="Minimal 8 karakter">
+                        </div>
+                        <div class="form-group">
+                            <label for="register-institution">Institusi</label>
+                            <input type="text" id="register-institution" name="institution" placeholder="Nama universitas/lembaga">
+                        </div>
+                        <div class="form-group">
+                            <label for="register-field">Bidang Penelitian</label>
+                            <input type="text" id="register-field" name="research_field" placeholder="Contoh: Psikologi, Ekonomi, dll">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Daftar</button>
+                    </form>
+                    <p class="auth-footer">Sudah punya akun? <a href="#" onclick="navigateTo('login')">Masuk di sini</a></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Page -->
+        <section id="page-dashboard" class="page">
+            <div class="dashboard-container">
+                <div class="dashboard-header">
+                    <h1>Dashboard</h1>
+                    <button class="btn btn-primary" onclick="navigateTo('new-project')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        Proyek Baru
+                    </button>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value" id="stat-projects">0</span>
+                            <span class="stat-label">Total Proyek</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                <polyline points="22 4 12 14.01 9 11.01"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value" id="stat-completed">0</span>
+                            <span class="stat-label">Selesai</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon yellow">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12 6 12 12 16 14"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value" id="stat-analyzing">0</span>
+                            <span class="stat-label">Sedang Dianalisis</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value" id="stat-uploads">0</span>
+                            <span class="stat-label">File Diupload</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-projects">
+                    <h2>Proyek Terbaru</h2>
+                    <div id="projects-list" class="projects-list">
+                        <div class="empty-state">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                            </svg>
+                            <p>Belum ada proyek. Buat proyek pertama Anda!</p>
+                            <button class="btn btn-primary" onclick="navigateTo('new-project')">Buat Proyek</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- New Project Page -->
+        <section id="page-new-project" class="page">
+            <div class="form-container">
+                <div class="form-header">
+                    <button class="btn btn-ghost" onclick="navigateTo('dashboard')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="19" y1="12" x2="5" y2="12"/>
+                            <polyline points="12 19 5 12 12 5"/>
+                        </svg>
+                        Kembali
+                    </button>
+                    <h1>Buat Proyek Baru</h1>
+                </div>
+
+                <form id="project-form" class="project-form" onsubmit="handleCreateProject(event)">
+                    <div class="form-section">
+                        <h3>Informasi Proyek</h3>
+                        <div class="form-group">
+                            <label for="project-title">Judul Penelitian *</label>
+                            <input type="text" id="project-title" name="title" required placeholder="Masukkan judul penelitian">
+                        </div>
+                        <div class="form-group">
+                            <label for="project-description">Deskripsi</label>
+                            <textarea id="project-description" name="description" rows="3" placeholder="Deskripsi singkat penelitian"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="project-type">Jenis Penelitian *</label>
+                            <select id="project-type" name="research_type" required>
+                                <option value="">Pilih jenis penelitian</option>
+                                <option value="quantitative">Kuantitatif</option>
+                                <option value="qualitative">Kualitatif</option>
+                                <option value="mixed">Mixed Methods</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Hipotesis dan Variabel</h3>
+                        <div class="form-group">
+                            <label for="project-hypothesis">Hipotesis Penelitian</label>
+                            <textarea id="project-hypothesis" name="hypothesis" rows="2" placeholder="Masukkan hipotesis penelitian"></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="var-independent">Variabel Independen</label>
+                                <input type="text" id="var-independent" name="var_independent" placeholder="Pisahkan dengan koma">
+                                <small>Contoh: Motivasi, Gaya Belajar</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="var-dependent">Variabel Dependen</label>
+                                <input type="text" id="var-dependent" name="var_dependent" placeholder="Pisahkan dengan koma">
+                                <small>Contoh: Prestasi Akademik</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="navigateTo('dashboard')">Batal</button>
+                        <button type="submit" class="btn btn-primary">Buat Proyek</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Project Detail Page -->
+        <section id="page-project" class="page">
+            <div class="project-container">
+                <div class="project-header">
+                    <button class="btn btn-ghost" onclick="navigateTo('dashboard')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="19" y1="12" x2="5" y2="12"/>
+                            <polyline points="12 19 5 12 12 5"/>
+                        </svg>
+                        Kembali
+                    </button>
+                    <div class="project-title-section">
+                        <h1 id="project-detail-title">Judul Proyek</h1>
+                        <span id="project-status" class="status-badge">Draft</span>
+                    </div>
+                </div>
+
+                <div class="project-tabs">
+                    <button class="tab-btn active" data-tab="overview" onclick="switchProjectTab('overview')">Ringkasan</button>
+                    <button class="tab-btn" data-tab="upload" onclick="switchProjectTab('upload')">Upload Data</button>
+                    <button class="tab-btn" data-tab="analysis" onclick="switchProjectTab('analysis')">Analisis</button>
+                    <button class="tab-btn" data-tab="results" onclick="switchProjectTab('results')">Hasil</button>
+                </div>
+
+                <!-- Overview Tab -->
+                <div id="tab-overview" class="tab-content active">
+                    <div class="overview-grid">
+                        <div class="overview-card">
+                            <h3>Detail Proyek</h3>
+                            <div class="detail-item">
+                                <span class="detail-label">Jenis Penelitian:</span>
+                                <span id="detail-type" class="detail-value">-</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Hipotesis:</span>
+                                <span id="detail-hypothesis" class="detail-value">-</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Variabel Independen:</span>
+                                <span id="detail-var-ind" class="detail-value">-</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Variabel Dependen:</span>
+                                <span id="detail-var-dep" class="detail-value">-</span>
+                            </div>
+                        </div>
+                        <div class="overview-card">
+                            <h3>Langkah Selanjutnya</h3>
+                            <div id="next-steps" class="next-steps">
+                                <div class="step-item active">
+                                    <div class="step-icon">1</div>
+                                    <span>Upload data penelitian</span>
+                                </div>
+                                <div class="step-item">
+                                    <div class="step-icon">2</div>
+                                    <span>Dapatkan rekomendasi analisis</span>
+                                </div>
+                                <div class="step-item">
+                                    <div class="step-icon">3</div>
+                                    <span>Proses analisis</span>
+                                </div>
+                                <div class="step-item">
+                                    <div class="step-icon">4</div>
+                                    <span>Lihat dan ekspor hasil</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upload Tab -->
+                <div id="tab-upload" class="tab-content">
+                    <div class="upload-section">
+                        <div class="upload-area" id="upload-dropzone">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="17 8 12 3 7 8"/>
+                                <line x1="12" y1="3" x2="12" y2="15"/>
+                            </svg>
+                            <h3>Drag & Drop File</h3>
+                            <p>atau klik untuk memilih file</p>
+                            <small>Format yang didukung: CSV, XLSX, JSON (max 50MB)</small>
+                            <input type="file" id="file-input" accept=".csv,.xlsx,.xls,.json" hidden>
+                        </div>
+
+                        <div id="upload-preview" class="upload-preview hidden">
+                            <h3>File yang Diupload</h3>
+                            <div id="uploaded-files-list" class="uploaded-files"></div>
+                        </div>
+
+                        <div id="data-preview" class="data-preview hidden">
+                            <h3>Preview Data</h3>
+                            <div class="data-summary" id="data-summary"></div>
+                            <div class="table-container">
+                                <table id="preview-table" class="preview-table">
+                                    <thead id="preview-thead"></thead>
+                                    <tbody id="preview-tbody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analysis Tab -->
+                <div id="tab-analysis" class="tab-content">
+                    <div class="analysis-section">
+                        <div class="analysis-actions">
+                            <button id="btn-get-recommendations" class="btn btn-primary" onclick="getRecommendations()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                                </svg>
+                                Dapatkan Rekomendasi AI
+                            </button>
+                        </div>
+
+                        <div id="recommendations-container" class="recommendations-container hidden">
+                            <h3>Rekomendasi Metode Analisis</h3>
+                            <div id="recommendations-list" class="recommendations-list"></div>
+                            <div class="analysis-form-actions">
+                                <button id="btn-process-analysis" class="btn btn-primary" onclick="processAnalysis()" disabled>
+                                    Proses Analisis dengan Metode Terpilih
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Tab -->
+                <div id="tab-results" class="tab-content">
+                    <div id="results-section" class="results-section">
+                        <div id="results-empty" class="empty-state">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <line x1="18" y1="20" x2="18" y2="10"/>
+                                <line x1="12" y1="20" x2="12" y2="4"/>
+                                <line x1="6" y1="20" x2="6" y2="14"/>
+                            </svg>
+                            <p>Belum ada hasil analisis. Lakukan analisis terlebih dahulu.</p>
+                        </div>
+
+                        <div id="results-content" class="results-content hidden">
+                            <div class="results-header">
+                                <h3>Hasil Analisis</h3>
+                                <div class="export-buttons">
+                                    <button class="btn btn-secondary" onclick="exportResults('pdf')">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                            <polyline points="14 2 14 8 20 8"/>
+                                        </svg>
+                                        PDF
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="exportResults('csv')">CSV</button>
+                                    <button class="btn btn-secondary" onclick="exportResults('json')">JSON</button>
+                                </div>
+                            </div>
+                            <div id="results-list" class="results-list"></div>
+                            <div id="results-summary" class="results-summary"></div>
+                            <div id="results-charts" class="results-charts"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>Research Data Analysis Platform - Powered by AI</p>
+            <p>Built with JSCroot + GoCroot</p>
+        </div>
+    </footer>
+
+    <!-- Main JavaScript -->
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
