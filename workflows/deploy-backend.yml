@@ -1,0 +1,72 @@
+name: Deploy Backend to Google Cloud Functions
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        working-directory: backend
+    
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Build and test
+        run: |
+          go mod download
+          go build -v ./...
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+      - name: Setup Google Cloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ vars.GCP_PROJECT_ID }}
+
+      - name: Deploy to Cloud Functions
+        run: |
+          gcloud functions deploy ResearchDataAnalysis \
+            --gen2 \
+            --runtime=go122 \
+            --region=${{ vars.GCP_REGION || 'asia-southeast1' }} \
+            --source=. \
+            --entry-point=ResearchDataAnalysis \
+            --trigger-http \
+            --allow-unauthenticated \
+            --set-env-vars="MONGOSTRING=${{ secrets.MONGOSTRING }}" \
+            --set-env-vars="PRIVATEKEY=${{ secrets.PRIVATEKEY }}" \
+            --set-env-vars="PUBLICKEY=${{ secrets.PUBLICKEY }}" \
+            --set-env-vars="GCS_BUCKET=${{ secrets.GCS_BUCKET }}" \
+            --set-env-vars="GCP_PROJECT_ID=${{ vars.GCP_PROJECT_ID }}" \
+            --set-env-vars="VERTEXAI_REGION=${{ vars.VERTEXAI_REGION || 'asia-southeast1' }}" \
+            --memory=512MB \
+            --timeout=300s \
+            --max-instances=10
+
+      - name: Get Function URL
+        run: |
+          URL=$(gcloud functions describe ResearchDataAnalysis \
+            --region=${{ vars.GCP_REGION || 'asia-southeast1' }} \
+            --format='value(serviceConfig.uri)')
+          echo "Function URL: $URL"
