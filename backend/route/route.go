@@ -1,0 +1,84 @@
+package route
+
+import (
+	"net/http"
+
+	"github.com/research-data-analysis/config"
+	"github.com/research-data-analysis/controller"
+	"github.com/research-data-analysis/helper/at"
+)
+
+// URL adalah router utama untuk semua endpoint
+func URL(w http.ResponseWriter, r *http.Request) {
+	// Set CORS headers
+	if config.SetAccessControlHeaders(w, r) {
+		return // Preflight request
+	}
+	
+	// Load environment variables
+	config.SetEnv()
+
+	method := r.Method
+	path := r.URL.Path
+
+	// Route matching
+	switch {
+	// Root endpoint
+	case method == "GET" && path == "/":
+		controller.GetHome(w, r)
+
+	// Authentication endpoints
+	case method == "POST" && path == "/auth/register":
+		controller.Register(w, r)
+	case method == "POST" && path == "/auth/login":
+		controller.Login(w, r)
+	case method == "GET" && path == "/auth/profile":
+		controller.GetProfile(w, r)
+
+	// Project endpoints
+	case method == "POST" && path == "/api/project":
+		controller.CreateProject(w, r)
+	case method == "GET" && path == "/api/project":
+		controller.GetProjects(w, r)
+	case method == "GET" && at.URLParam(path, "/api/project/:id"):
+		projectID := at.GetURLParam(path, "/api/project/:id", "id")
+		controller.GetProjectByID(w, r, projectID)
+	case method == "PUT" && path == "/api/project":
+		controller.UpdateProject(w, r)
+	case method == "DELETE" && path == "/api/project":
+		controller.DeleteProject(w, r)
+
+	// Upload endpoints
+	case method == "POST" && at.URLParam(path, "/api/upload/:projectId"):
+		projectID := at.GetURLParam(path, "/api/upload/:projectId", "projectId")
+		controller.UploadData(w, r, projectID)
+	case method == "GET" && at.URLParam(path, "/api/preview/:uploadId"):
+		uploadID := at.GetURLParam(path, "/api/preview/:uploadId", "uploadId")
+		controller.GetDataPreview(w, r, uploadID)
+	case method == "GET" && at.URLParam(path, "/api/stats/:uploadId"):
+		uploadID := at.GetURLParam(path, "/api/stats/:uploadId", "uploadId")
+		controller.GetDataStats(w, r, uploadID)
+
+	// Analysis endpoints
+	case method == "POST" && at.URLParam(path, "/api/recommend/:projectId"):
+		projectID := at.GetURLParam(path, "/api/recommend/:projectId", "projectId")
+		controller.GetRecommendations(w, r, projectID)
+	case method == "POST" && path == "/api/process":
+		controller.ProcessAnalysis(w, r)
+	case method == "GET" && at.URLParam(path, "/api/results/:analysisId"):
+		analysisID := at.GetURLParam(path, "/api/results/:analysisId", "analysisId")
+		controller.GetAnalysisResults(w, r, analysisID)
+	case method == "POST" && at.URLParam(path, "/api/refine/:analysisId"):
+		analysisID := at.GetURLParam(path, "/api/refine/:analysisId", "analysisId")
+		controller.RefineAnalysis(w, r, analysisID)
+
+	// Export endpoint
+	case method == "GET" && at.URLParam(path, "/api/export/:analysisId"):
+		analysisID := at.GetURLParam(path, "/api/export/:analysisId", "analysisId")
+		controller.ExportResults(w, r, analysisID)
+
+	// 404 Not Found
+	default:
+		controller.NotFound(w, r)
+	}
+}
