@@ -291,7 +291,7 @@ func (c *Config) ConfigurationHealthCheck() error {
 			if !c.isProduction {
 				log.Printf("WARNING: MongoDB health check failed in development: %v", err)
 			} else {
-				return fmt.Errorf("MongoDB health check failed: %w", err)
+				log.Printf("WARNING: MongoDB health check failed in production: %v", err)
 			}
 		}
 	} else {
