@@ -39,15 +39,21 @@ export VERTEXAI_REGION="asia-southeast1"
 export PORT=8080
 export ENVIRONMENT="production"
 
-# Navigate to backend directory (assume current directory has backend/)
+# Navigate to backend directory for building
+echo "Navigating to backend directory..."
+cd backend
+
 if [ ! -f "go.mod" ]; then
-    echo "Error: go.mod not found. Pastikan Anda berada di root project directory."
+    echo "Error: go.mod not found in backend directory."
     exit 1
 fi
 
 # Build Docker image dengan GoCroot implementation
 echo "Building Docker image dengan GoCroot implementation..."
 docker build -t asia-southeast1-docker.pkg.dev/neliti-480014/research-repo/research-backend:latest .
+
+# Return to root directory for deployment
+cd ..
 
 # Push to Artifact Registry
 echo "Pushing image to Artifact Registry..."
