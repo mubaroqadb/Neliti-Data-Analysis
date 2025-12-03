@@ -2,7 +2,6 @@ package config
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -427,3 +426,6 @@ func GetGCPProjectID() string {
 func GetVertexAIRegion() string {
 	return GetConfig().GCP.VertexAIRegion
 }
+
+// Legacy support for GoCroot compatibility
+var Mongoconn = GetConfig()
