@@ -94,7 +94,7 @@ func LoadConfig() *Config {
 		}
 		
 		if err := appConfig.initializeConnections(); err != nil {
-			log.Fatalf("Failed to initialize connections: %v", err)
+			log.Printf("WARNING: Failed to initialize connections: %v, continuing anyway", err)
 		}
 	})
 	
