@@ -7,16 +7,16 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/research-data-analysis/config"
 	"github.com/research-data-analysis/helper/at"
 	"github.com/research-data-analysis/helper/atdb"
 	"github.com/research-data-analysis/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// MongoDB helper function tersedia di analysis.go
+// MongoDB and helper functions tersedia di analysis.go
+// - getMongoDB()
+// - getUserIDFromToken()
 
 // ExportResults handler untuk mengekspor hasil analisis
 func ExportResults(w http.ResponseWriter, r *http.Request, analysisIDStr string) {
@@ -204,15 +204,3 @@ func exportJSON(w http.ResponseWriter, project model.Project, analysis model.Ana
 	w.Write(jsonData)
 }
 
-// Helper function untuk get user ID from JWT token
-func getUserIDFromToken(r *http.Request) (primitive.ObjectID, error) {
-	// Simplified implementation - dalam production, implementasi JWT validation
-	authHeader := r.Header.Get("Authorization")
-	if authHeader == "" {
-		return primitive.NilObjectID, fmt.Errorf("no authorization header")
-	}
-	
-	// Return dummy user ID untuk testing
-	// Dalam production, parse JWT dan return actual user ID
-	return primitive.NewObjectID(), nil
-}
