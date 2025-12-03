@@ -16,14 +16,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// Helper function untuk handle MongoDB error
-func getMongoDB() *mongo.Database {
-    db, err := config.GetMongoDB()
-    if err != nil {
-        return nil
-    }
-    return db
-}
+// MongoDB helper function tersedia di analysis.go
 
 // ExportResults handler untuk mengekspor hasil analisis
 func ExportResults(w http.ResponseWriter, r *http.Request, analysisIDStr string) {
