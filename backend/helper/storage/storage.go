@@ -18,7 +18,7 @@ func UploadFile(ctx context.Context, fileName string, data io.Reader, contentTyp
 	}
 	defer client.Close()
 
-	bucket := client.Bucket(config.GCSBucket)
+	bucket := client.Bucket(config.GetGCSBucket())
 	obj := bucket.Object(fileName)
 
 	wc := obj.NewWriter(ctx)
@@ -32,7 +32,7 @@ func UploadFile(ctx context.Context, fileName string, data io.Reader, contentTyp
 	}
 
 	// Return public URL
-	publicURL := fmt.Sprintf("https://storage.googleapis.com/%s/%s", config.GCSBucket, fileName)
+	publicURL := fmt.Sprintf("https://storage.googleapis.com/%s/%s", config.GetGCSBucket(), fileName)
 	return publicURL, nil
 }
 
@@ -50,7 +50,7 @@ func GetSignedURL(ctx context.Context, fileName string, expiration time.Duration
 		Expires: time.Now().Add(expiration),
 	}
 
-	url, err := client.Bucket(config.GCSBucket).SignedURL(fileName, opts)
+	url, err := client.Bucket(config.GetGCSBucket()).SignedURL(fileName, opts)
 	if err != nil {
 		return "", fmt.Errorf("Bucket.SignedURL: %v", err)
 	}
@@ -66,7 +66,7 @@ func DeleteFile(ctx context.Context, fileName string) error {
 	}
 	defer client.Close()
 
-	obj := client.Bucket(config.GCSBucket).Object(fileName)
+	obj := client.Bucket(config.GetGCSBucket()).Object(fileName)
 	if err := obj.Delete(ctx); err != nil {
 		return fmt.Errorf("Object.Delete: %v", err)
 	}
@@ -82,7 +82,7 @@ func DownloadFile(ctx context.Context, fileName string) ([]byte, error) {
 	}
 	defer client.Close()
 
-	rc, err := client.Bucket(config.GCSBucket).Object(fileName).NewReader(ctx)
+	rc, err := client.Bucket(config.GetGCSBucket()).Object(fileName).NewReader(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("Object.NewReader: %v", err)
 	}

@@ -27,7 +27,10 @@ func EncodeforHours(id, name, privateKeyHex string, hours int) (string, error) {
 		return "", errors.New("invalid private key size")
 	}
 
-	key := paseto.NewV4AsymmetricSecretKeyFromBytes(privateKeyBytes)
+	key, err := paseto.NewV4AsymmetricSecretKeyFromBytes(privateKeyBytes)
+	if err != nil {
+		return "", err
+	}
 	token := paseto.NewToken()
 	token.SetIssuedAt(time.Now())
 	token.SetNotBefore(time.Now())
@@ -49,7 +52,10 @@ func Decode(publicKeyHex, tokenString string) (*Payload, error) {
 		return nil, errors.New("invalid public key size")
 	}
 
-	key := paseto.NewV4AsymmetricPublicKeyFromBytes(publicKeyBytes)
+	key, err := paseto.NewV4AsymmetricPublicKeyFromBytes(publicKeyBytes)
+	if err != nil {
+		return nil, err
+	}
 	parser := paseto.NewParser()
 
 	token, err := parser.ParseV4Public(key, tokenString, nil)

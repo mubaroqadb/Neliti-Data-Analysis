@@ -1,4 +1,4 @@
-package researchdata
+package main
 
 import (
 	"github.com/research-data-analysis/route"
