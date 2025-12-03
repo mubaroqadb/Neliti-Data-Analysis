@@ -1,1 +1,83 @@
-cGFja2FnZSBjb250cm9sbGVyCgppbXBvcnQgKAoJIm5ldC9odHRwIgoJImdpdGh1Yi5jb20vcmVzZWFyY2gtZGF0YS1hbmFseXNpcy9oZWxwZXIvYXQiCgkiZ2l0aHViLmNvbS9yZXNlYXJjaC1kYXRhLWFuYWx5c2lzL21vZGVsIgoJImdvLm1vbmdvZGIub3JnL21vbmdvLWRyaXZlci9ic29uL3ByaW1pdGl2ZSIKKQoKLy8gUmVzcG9uc2UgaGFuZGxlciB1bnR1ayByZXNwb25zZXMga29uc2lzdGVuCmZ1bmMgUmVzcG9uc2UodyBodHRwLlJlc3BvbnNlV3JpdGVyLCBzdGF0dXMgaW50LCBkYXRhIGludGVyZmFjZXt9KSB7Cgl3LkhlYWRlcigpLlNldCgiQ29udGVudC1UeXBlIiwgImFwcGxpY2F0aW9uL2pzb24iKQoJdy5Xcml0ZUhlYWRlcihzdGF0dXMpCglhdC5Xcml0ZUpTT04odywgc3RhdHVzLCBkYXRhKQp9CgovLyBHZXRBbGxQcm9qZWN0cyBoYW5kbGVyIHVudHVrIG1lbmdhbWJpbCBzZW11YSBwcm9qZWN0cyB1c2VyCmZ1bmMgR2V0QWxsUHJvamVjdHModyBodHRwLlJlc3BvbnNlV3JpdGVyLCByICpodHRwLlJlcXVlc3QpIHsKCS8vIEltcGxlbWVudGF0aW9uIGZvciBnZXR0aW5nIGFsbCBwcm9qZWN0cwoJLy8gVGhpcyB3b3VsZCB1c2UgdGhlIGFjdHVhbCBhdXRoZW50aWNhdGlvbiBhbmQgZGF0YWJhc2UgbG9naWMKCXJlc3BvbnNlIDo9IG1vZGVsLlJlc3BvbnNlegoJCVN0YXR1czogICAic3VjY2VzcyIsCgkJTWVzc2FnZTogIlByb2plY3RzIHJldHJpZXZlZCBzdWNjZXNzZnVsbHkiLAoJCURhdGE6ICAgIFtdaW50ZXJmYWNle317e30sCgl9CglSZXNwb25zZSh3LCBodHRwLlN0YXR1c09LLCByZXNwb25zZSkKfQoKLy8gR2V0UHJvamVjdCBoYW5kbGVyIHVudHVrIG1lbmdhbWJpbCBzYXR1IHByb2plY3QgYmVyZGFzYXJrYW4gSUQKZnVuYyBHZXRQcm9qZWN0KHcgbmV0L2h0dHAuUmVzcG9uc2VXcml0ZXIsIHIgKmh0dHAuUmVxdWVzdCwgcHJvamVjdElEU3RyIHN0cmluZykgewoJLy8gSW1wbGVtZW50YXRpb24gZm9yIGdldHRpbmcgYSBzcGVjaWZpYyBwcm9qZWN0CglyZXNwb25zZSA6PSBtb2RlbC5SZXNwb25zZXsKCQlTdGF0dXM6ICAic3VjY2VzcyIsCgkJTWVzc2FnZTogIlByb2plY3QgcmV0cmlldmVkIHN1Y2Nlc3NmdWxseSIsCgkJRGF0YTogICAgbmlsLAoJfQoJUmVzcG9uc2UodywgaHR0cC5TdGF0dXNPSywgcmVzcG9uc2UpCn0KCi8vIENyZWF0ZVByb2plY3QgaGFuZGxlciB1bnR1ayBtZW1idWF0IHByb2plY3QgYmFydQpmdW5jIENyZWF0ZVByb2plY3QodyBodHRwLlJlc3BvbnNlV3JpdGVyLCByICpodHRwLlJlcXVlc3QpIHsKCS8vIEltcGxlbWVudGF0aW9uIGZvciBjcmVhdGluZyBhIG5ldyBwcm9qZWN0CglyZXNwb25zZSA6PSBtb2RlbC5SZXNwb25zZXsKCQlTdGF0dXM6ICAic3VjY2VzcyIsCgkJTWVzc2FnZTogIlByb2plY3QgY3JlYXRlZCBzdWNjZXNzZnVsbHkiLAoJCURhdGE6ICAgIG5pbCwKCX0KCVJlc3BvbnNlKHcsIGh0dHAuU3RhdHVzQ3JlYXRlZCwgcmVzcG9uc2UpCn0KCi8vIFVwZGF0ZVByb2plY3QgaGFuZGxlciB1bnR1ayB1cGRhdGUgcHJvamVjdApmdW5jIFVwZGF0ZVByb2plY3QodyBodHRwLlJlc3BvbnNlV3JpdGVyLCByICpodHRwLlJlcXVlc3QsIHByb2plY3RJRFN0ciBzdHJpbmcpIHsKCS8vIEltcGxlbWVudGF0aW9uIGZvciB1cGRhdGluZyBhIHByb2plY3QKCXJlc3BvbnNlIDo9IG1vZGVsLlJlc3BvbnNlewoJCVN0YXR1czogICAic3VjY2VzcyIsCgkJTWVzc2FnZTogIlByb2plY3QgdXBkYXRlZCBzdWNjZXNzZnVsbHkiLAoJCURhdGE6ICAgIG5pbCwKCX0KCVJlc3BvbnNlKHcsIGh0dHAuU3RhdHVzT0ssIHJlc3BvbnNlKQp9CgovLyBEZWxldGVQcm9qZWN0IGhhbmRsZXIgdW50dWsgaGFwdXMgcHJvamVjdApmdW5jIERlbGV0ZVByb2plY3QodyBodHRwLlJlc3BvbnNlV3JpdGVyLCByICpodHRwLlJlcXVlc3QsIHByb2plY3RJRFN0ciBzdHJpbmcpIHsKCS8vIEltcGxlbWVudGF0aW9uIGZvciBkZWxldGluZyBhIHByb2plY3QKCXJlc3BvbnNlIDo9IG1vZGVsLlJlc3BvbnNlegoJCVN0YXR1czogICAic3VjY2VzcyIsCgkJTWVzc2FnZTogIlByb2plY3QgZGVsZXRlZCBzdWNjZXNzZnVsbHkiLAoJCURhdGE6ICAgIG5pbCwKCX0KCVJlc3BvbnNlKHcsIGh0dHAuU3RhdHVzT0ssIHJlc3BvbnNlKQp9CgovLyBIZWFsdGhDaGVjayBoYW5kbGVyIHVudHVrIGhlYWx0aCBjaGVjayBlbmRwb2ludApmdW5jIEhlYWx0aENoZWNrKHcgbmV0L2h0dHAuUmVzcG9uc2VXcml0ZXIsIHIgKmh0dHAuUmVxdWVzdCkgewoJLy8gSW1wbGVtZW50YXRpb24gZm9yIGhlYWx0aCBjaGVjawoJcmVzcG9uc2UgOj0gbWFwW3N0cmluZ11pbnRlcmZhY2V7fXsKCQkic3RhdHVzIjogICJoZWFsdGh5IiwKCQkibWVzc2FnZSI6ICJTZXJ2aWNlIGlzIHJ1bm5pbmciLAoJCSJ0aW1lIjogICAgcHJpbWl0aXZlLk5ld09iamVjdElEKCkuVGltZXN0YW1wKCksCgl9CglSZXNwb25zZSh3LCBodHRwLlN0YXR1c09LLCByZXNwb25zZSkKfQ==
+package controller
+
+import (
+    "net/http"
+    
+    "github.com/research-data-analysis/helper/at"
+    "github.com/research-data-analysis/model"
+    "go.mongodb.org/mongo-driver/bson/primitive"
+)
+
+// Response handler untuk responses konsisten
+func Response(w http.ResponseWriter, status int, data interface{}) {
+    w.Header().Set("Content-Type", "application/json")
+    w.WriteHeader(status)
+    at.WriteJSON(w, status, data)
+}
+
+// GetAllProjects handler untuk mendapat semua project user
+func GetAllProjects(w http.ResponseWriter, r *http.Request) {
+    // Implementation for getting all projects
+    // This would use the actual authentication and database logic
+    response := model.Response{
+        Status:   "success",
+        Message:  "Projects retrieved successfully",
+        Data:     []interface{}{},
+    }
+    Response(w, http.StatusOK, response)
+}
+
+// GetProject handler untuk mendapat project berdasarkan ID
+func GetProject(w http.ResponseWriter, r *http.Request, projectIDStr string) {
+    // Implementation for getting a specific project
+    response := model.Response{
+        Status:   "success",
+        Message:  "Project retrieved successfully",
+        Data:     nil,
+    }
+    Response(w, http.StatusOK, response)
+}
+
+// CreateProject handler untuk membuat project baru
+func CreateProject(w http.ResponseWriter, r *http.Request) {
+    // Implementation for creating a new project
+    response := model.Response{
+        Status:   "success",
+        Message:  "Project created successfully",
+        Data:     nil,
+    }
+    Response(w, http.StatusCreated, response)
+}
+
+// UpdateProject handler untuk update project
+func UpdateProject(w http.ResponseWriter, r *http.Request, projectIDStr string) {
+    // Implementation for updating a project
+    response := model.Response{
+        Status:   "success",
+        Message:  "Project updated successfully",
+        Data:     nil,
+    }
+    Response(w, http.StatusOK, response)
+}
+
+// DeleteProject handler untuk delete project
+func DeleteProject(w http.ResponseWriter, r *http.Request, projectIDStr string) {
+    // Implementation for deleting a project
+    response := model.Response{
+        Status:   "success",
+        Message:  "Project deleted successfully",
+        Data:     nil,
+    }
+    Response(w, http.StatusOK, response)
+}
+
+// HealthCheck handler untuk health check endpoint
+func HealthCheck(w http.ResponseWriter, r *http.Request) {
+    // Implementation for health check
+    response := map[string]interface{}{
+        "status":    "healthy",
+        "message":   "Service is running",
+        "timestamp": primitive.NewObjectID().Timestamp(),
+    }
+    Response(w, http.StatusOK, response)
+}
