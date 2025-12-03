@@ -91,9 +91,13 @@ GCP_PROJECT_ID=your-gcp-project-id
 VERTEXAI_REGION=asia-southeast1
 ```
 
-## Deployment
+## Deployment Status
 
-### Backend (Google Cloud Functions)
+- **Last Updated**: 2025-12-03 20:29:51
+- **Backend**: Deploying to Cloud Run with Workload Identity Federation
+- **GitHub Actions**: Using WIF authentication for secure deployment
+
+### Backend (Cloud Run)
 ```bash
 gcloud functions deploy ResearchDataAnalysis \
   --gen2 \
