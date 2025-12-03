@@ -36,6 +36,7 @@ jobs:
       run: |
         cd backend
         docker build -t asia-southeast1-docker.pkg.dev/neliti-480014/research-repo/research-backend:latest .
+        gcloud auth configure-docker asia-southeast1-docker.pkg.dev
         docker push asia-southeast1-docker.pkg.dev/neliti-480014/research-repo/research-backend:latest
 
     - name: Deploy to Cloud Run
