@@ -20,21 +20,22 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Authenticate to Google Cloud
+      id: auth
       uses: google-github-actions/auth@v2
       with:
         project_id: neliti-480014
         workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
         service_account: github-actions-sa@neliti-480014.iam.gserviceaccount.com
-        access_token_lifetime: 300s
 
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v2
       with:
         project_id: neliti-480014
+        version: latest
 
     - name: Authorize Docker push
       run: |
-        gcloud auth configure-docker asia-southeast1-docker.pkg.dev --quiet
+        gcloud auth configure-docker asia-southeast1-docker.pkg.dev
 
     - name: Build and push Docker image
       run: |
