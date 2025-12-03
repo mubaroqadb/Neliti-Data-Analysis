@@ -13,7 +13,17 @@ import (
 	"github.com/research-data-analysis/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 )
+
+// Helper function untuk handle MongoDB error
+func getMongoDB() *mongo.Database {
+    db, err := config.GetMongoDB()
+    if err != nil {
+        return nil
+    }
+    return db
+}
 
 // ExportResults handler untuk mengekspor hasil analisis
 func ExportResults(w http.ResponseWriter, r *http.Request, analysisIDStr string) {
@@ -41,7 +51,16 @@ func ExportResults(w http.ResponseWriter, r *http.Request, analysisIDStr string)
 		format = "pdf"
 	}
 
-	analysis, err := atdb.GetOneDoc[model.Analysis](config.Mongoconn, "analyses", bson.M{"_id": analysisID})
+	mongoDB := getMongoDB()
+	if mongoDB == nil {
+		at.WriteJSON(w, http.StatusInternalServerError, model.Response{
+			Status:  "error",
+			Message: "Database connection failed",
+		})
+		return
+	}
+	
+	analysis, err := atdb.GetOneDoc[model.Analysis](mongoDB, "analyses", bson.M{"_id": analysisID})
 	if err != nil {
 		at.WriteJSON(w, http.StatusNotFound, model.Response{
 			Status:  "error",
@@ -52,7 +71,7 @@ func ExportResults(w http.ResponseWriter, r *http.Request, analysisIDStr string)
 
 	// Verify ownership
 	project, err := atdb.GetOneDoc[model.Project](
-		config.Mongoconn,
+		mongoDB,
 		"projects",
 		bson.M{"_id": analysis.ProjectID, "user_id": userID},
 	)
@@ -190,4 +209,17 @@ func exportJSON(w http.ResponseWriter, project model.Project, analysis model.Ana
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=\"analysis_export_%s.json\"", analysis.ID.Hex()))
 	w.Write(jsonData)
+}
+
+// Helper function untuk get user ID from JWT token
+func getUserIDFromToken(r *http.Request) (primitive.ObjectID, error) {
+	// Simplified implementation - dalam production, implementasi JWT validation
+	authHeader := r.Header.Get("Authorization")
+	if authHeader == "" {
+		return primitive.NilObjectID, fmt.Errorf("no authorization header")
+	}
+	
+	// Return dummy user ID untuk testing
+	// Dalam production, parse JWT dan return actual user ID
+	return primitive.NewObjectID(), nil
 }

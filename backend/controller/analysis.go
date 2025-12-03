@@ -200,7 +200,7 @@ func ProcessAnalysis(w http.ResponseWriter, r *http.Request, analysisIDStr strin
     }
 
     // Update status analysis
-    err = atdb.UpdateOneDoc(
+    _, err = atdb.UpdateOneDoc(
         mongoDB,
         "analyses",
         bson.M{"_id": analysisID},
@@ -231,7 +231,7 @@ func ProcessAnalysis(w http.ResponseWriter, r *http.Request, analysisIDStr strin
     }
 
     // Update analysis dengan hasil final
-    err = atdb.UpdateOneDoc(
+    _, err = atdb.UpdateOneDoc(
         mongoDB,
         "analyses",
         bson.M{"_id": analysisID},
@@ -439,7 +439,7 @@ func UpdateAnalysis(w http.ResponseWriter, r *http.Request, analysisIDStr string
         updateFields["user_feedback"] = updateData.Notes
     }
 
-    err = atdb.UpdateOneDoc(
+    _, err = atdb.UpdateOneDoc(
         mongoDB,
         "analyses",
         bson.M{"_id": analysisID},
@@ -494,7 +494,7 @@ func DeleteAnalysis(w http.ResponseWriter, r *http.Request, analysisIDStr string
     }
 
     // Delete analysis (dalam production, mungkin soft delete)
-    err = atdb.UpdateOneDoc(
+    _, err = atdb.UpdateOneDoc(
         mongoDB,
         "analyses",
         bson.M{"_id": analysisID},
