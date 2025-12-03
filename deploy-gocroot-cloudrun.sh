@@ -48,6 +48,12 @@ if [ ! -f "go.mod" ]; then
     exit 1
 fi
 
+# Clean and tidy dependencies (fix checksum issues)
+echo "Cleaning and tidying dependencies..."
+go clean -modcache 2>/dev/null || true
+go mod download 2>/dev/null || true
+go mod tidy
+
 # Build Docker image dengan GoCroot implementation
 echo "Building Docker image dengan GoCroot implementation..."
 docker build -t asia-southeast1-docker.pkg.dev/neliti-480014/research-repo/research-backend:latest .
