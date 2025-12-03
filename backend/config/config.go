@@ -199,36 +199,54 @@ func SetEnv() {
 func (c *Config) Validate() error {
 	// Validasi Database
 	if c.MongoDB.ConnectionString == "" {
-		return fmt.Errorf("MONGOSTRING environment variable is required")
+		if !c.isProduction {
+			log.Printf("WARNING: MONGOSTRING not set, using default localhost connection for development")
+			c.MongoDB.ConnectionString = "mongodb://localhost:27017/research_data_analysis"
+		} else {
+			return fmt.Errorf("MONGOSTRING environment variable is required in production")
+		}
 	}
 	
 	if c.MongoDB.DatabaseName == "" {
-		return fmt.Errorf("database name cannot be empty")
+		c.MongoDB.DatabaseName = "research_data_analysis"
 	}
 	
-	// Validasi Authentication
+	// Validasi Authentication - provide defaults for development
 	if c.Auth.PrivateKey == "" {
-		return fmt.Errorf("PRIVATEKEY environment variable is required for authentication")
+		if !c.isProduction {
+			log.Printf("WARNING: PRIVATEKEY not set, using development key")
+			c.Auth.PrivateKey = "development-private-key"
+		} else {
+			return fmt.Errorf("PRIVATEKEY environment variable is required in production")
+		}
 	}
 	
 	if c.Auth.PublicKey == "" {
-		return fmt.Errorf("PUBLICKEY environment variable is required for authentication")
+		if !c.isProduction {
+			log.Printf("WARNING: PUBLICKEY not set, using development key")
+			c.Auth.PublicKey = "development-public-key"
+		} else {
+			return fmt.Errorf("PUBLICKEY environment variable is required in production")
+		}
 	}
 	
 	if c.Auth.JWTSecret == "" || c.Auth.JWTSecret == "default-jwt-secret-change-in-production" {
-		return fmt.Errorf("JWT_SECRET environment variable must be set to a secure value")
+		if !c.isProduction {
+			log.Printf("WARNING: JWT_SECRET not set or using default, using development secret")
+			c.Auth.JWTSecret = "development-jwt-secret"
+		} else {
+			return fmt.Errorf("JWT_SECRET environment variable must be set to a secure value in production")
+		}
 	}
 	
-	// Validasi GCP (required for production)
-	if c.isProduction {
-		if c.GCP.ProjectID == "" {
-			return fmt.Errorf("GCP_PROJECT_ID environment variable is required in production")
-		}
+	// Validasi GCP (only required for production with certain features)
+	if c.isProduction && c.GCP.ProjectID == "" {
+		log.Printf("WARNING: GCP_PROJECT_ID not set, some features may not work properly")
 	}
 	
 	// Validasi Server
 	if c.Server.Port == "" {
-		return fmt.Errorf("PORT environment variable cannot be empty")
+		c.Server.Port = "8080"
 	}
 	
 	// Validasi Port format
@@ -267,19 +285,33 @@ func (c *Config) TestConnection() error {
 
 // ConfigurationHealthCheck melakukan health check konfigurasi
 func (c *Config) ConfigurationHealthCheck() error {
-	// Test MongoDB connection
-	if err := c.TestConnection(); err != nil {
-		return fmt.Errorf("MongoDB health check failed: %w", err)
+	// Test MongoDB connection (only if client is available)
+	if c.mongoClient != nil {
+		if err := c.TestConnection(); err != nil {
+			if !c.isProduction {
+				log.Printf("WARNING: MongoDB health check failed in development: %v", err)
+			} else {
+				return fmt.Errorf("MongoDB health check failed: %w", err)
+			}
+		}
+	} else {
+		if !c.isProduction {
+			log.Printf("WARNING: MongoDB client not initialized, skipping health check in development")
+		}
 	}
 
 	// Validate authentication config
 	if c.Auth.PrivateKey == "" || c.Auth.PublicKey == "" {
-		return fmt.Errorf("authentication keys not configured")
+		if c.isProduction {
+			return fmt.Errorf("authentication keys not configured for production")
+		} else {
+			log.Printf("WARNING: Authentication keys not configured, using development defaults")
+		}
 	}
 
-	// Test GCP config if in production
+	// GCP config is optional, only warn in production
 	if c.isProduction && c.GCP.ProjectID == "" {
-		return fmt.Errorf("GCP Project ID not configured for production")
+		log.Printf("WARNING: GCP Project ID not configured, some features may not work")
 	}
 
 	return nil
@@ -302,11 +334,19 @@ func (c *Config) initializeConnections() error {
 	
 	client, err := mongo.Connect(ctx, clientOptions.ApplyURI(c.MongoDB.ConnectionString))
 	if err != nil {
+		if !c.isProduction {
+			log.Printf("WARNING: Failed to connect to MongoDB, continuing without database: %v", err)
+			return nil // Continue without database in development
+		}
 		return fmt.Errorf("failed to connect to MongoDB: %w", err)
 	}
 	
 	// Test connection
 	if err := client.Ping(ctx, nil); err != nil {
+		if !c.isProduction {
+			log.Printf("WARNING: Failed to ping MongoDB, continuing without database: %v", err)
+			return nil // Continue without database in development
+		}
 		return fmt.Errorf("failed to ping MongoDB: %w", err)
 	}
 	
