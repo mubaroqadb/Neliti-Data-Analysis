@@ -48,11 +48,19 @@ if [ ! -f "go.mod" ]; then
     exit 1
 fi
 
-# Clean and tidy dependencies (fix checksum issues)
+# Clean and tidy dependencies with aggressive cache clearing
 echo "Cleaning and tidying dependencies..."
-go clean -modcache 2>/dev/null || true
-go mod download 2>/dev/null || true
+echo "Step 1: Clearing Go module cache..."
+go clean -modcache -cache
+echo "Step 2: Removing any corrupted files..."
+rm -f go.sum
+rm -f .cache/*
+echo "Step 3: Tidying module dependencies..."
 go mod tidy
+echo "Step 4: Downloading all dependencies..."
+go mod download
+echo "Step 5: Verifying module integrity..."
+go mod verify
 
 # Build Docker image dengan GoCroot implementation
 echo "Building Docker image dengan GoCroot implementation..."
