@@ -27,7 +27,7 @@ func URL(w http.ResponseWriter, r *http.Request) {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`{"status": "healthy", "environment": "` + cfg.App.Environment + `"}, data)`
+		w.Write([]byte(`{"status": "healthy", "environment": "` + cfg.App.Environment + `"`))
 		return
 	}
 	
@@ -113,5 +113,5 @@ func URL(w http.ResponseWriter, r *http.Request) {
 func NotFound(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusNotFound)
-	w.Write([]byte(`{"error": "Route not found", "method": "` + r.Method + `", "path": "` + r.URL.Path + `"}, data)`
+	w.Write([]byte(`{"error": "Route not found", "method": "` + r.Method + `", "path": "` + r.URL.Path + `"`))
 }
