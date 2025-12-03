@@ -21,13 +21,13 @@ func URL(w http.ResponseWriter, r *http.Request) {
 	
 	// Health check endpoint untuk monitoring
 	if r.Method == "GET" && r.URL.Path == "/health" {
-		if err := config.ConfigurationHealthCheck(); err != nil {
+		if err := cfg.ConfigurationHealthCheck(); err != nil {
 			http.Error(w, "Service Unavailable", http.StatusServiceUnavailable)
 			return
 		}
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`{"status": "healthy", "environment": "` + cfg.App.Environment + `"}`))
+		w.Write([]byte(`{"status": "healthy", "environment": "` + cfg.App.Environment + `"}, data)`
 		return
 	}
 	
@@ -62,14 +62,16 @@ func URL(w http.ResponseWriter, r *http.Request) {
 	case method == "POST" && path == "/api/project":
 		controller.CreateProject(w, r)
 	case method == "GET" && path == "/api/project":
-		controller.GetProjects(w, r)
+		controller.GetAllProjects(w, r)
 	case method == "GET" && at.URLParam(path, "/api/project/:id"):
 		projectID := at.GetURLParam(path, "/api/project/:id", "id")
-		controller.GetProjectByID(w, r, projectID)
-	case method == "PUT" && path == "/api/project":
-		controller.UpdateProject(w, r)
-	case method == "DELETE" && path == "/api/project":
-		controller.DeleteProject(w, r)
+		controller.GetProject(w, r, projectID)
+	case method == "PUT" && at.URLParam(path, "/api/project/:id"):
+		projectID := at.GetURLParam(path, "/api/project/:id", "id")
+		controller.UpdateProject(w, r, projectID)
+	case method == "DELETE" && at.URLParam(path, "/api/project/:id"):
+		projectID := at.GetURLParam(path, "/api/project/:id", "id")
+		controller.DeleteProject(w, r, projectID)
 
 	// Upload endpoints
 	case method == "POST" && at.URLParam(path, "/api/upload/:projectId"):
@@ -86,11 +88,12 @@ func URL(w http.ResponseWriter, r *http.Request) {
 	case method == "POST" && at.URLParam(path, "/api/recommend/:projectId"):
 		projectID := at.GetURLParam(path, "/api/recommend/:projectId", "projectId")
 		controller.GetRecommendations(w, r, projectID)
-	case method == "POST" && path == "/api/process":
-		controller.ProcessAnalysis(w, r)
+	case method == "POST" && at.URLParam(path, "/api/process/:analysisId"):
+		analysisID := at.GetURLParam(path, "/api/process/:analysisId", "analysisId")
+		controller.ProcessAnalysis(w, r, analysisID)
 	case method == "GET" && at.URLParam(path, "/api/results/:analysisId"):
 		analysisID := at.GetURLParam(path, "/api/results/:analysisId", "analysisId")
-		controller.GetAnalysisResults(w, r, analysisID)
+		controller.GetAnalysis(w, r, analysisID)
 	case method == "POST" && at.URLParam(path, "/api/refine/:analysisId"):
 		analysisID := at.GetURLParam(path, "/api/refine/:analysisId", "analysisId")
 		controller.RefineAnalysis(w, r, analysisID)
@@ -102,6 +105,13 @@ func URL(w http.ResponseWriter, r *http.Request) {
 
 	// 404 Not Found
 	default:
-		controller.NotFound(w, r)
+		NotFound(w, r)
 	}
+}
+
+// NotFound handler untuk 404 responses
+func NotFound(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusNotFound)
+	w.Write([]byte(`{"error": "Route not found", "method": "` + r.Method + `", "path": "` + r.URL.Path + `"}, data)`
 }
