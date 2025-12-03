@@ -14,12 +14,15 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Cloud SDK
-      uses: google-github-actions/setup-gcloud@v2
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v1
       with:
         project_id: neliti-480014
-        service_account_key: ${{ secrets.GCP_SA_KEY }}
-        export_default_credentials: true
+        workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+        service_account: github-actions-sa@neliti-480014.iam.gserviceaccount.com
+
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v2
 
     - name: Configure Docker authentication
       run: gcloud auth configure-docker asia-southeast1-docker.pkg.dev
