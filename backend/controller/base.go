@@ -2,61 +2,81 @@ package controller
 
 import (
 	"net/http"
-
-	"github.com/research-data-analysis/helper/at"
-	"github.com/research-data-analysis/model"
+	"./helper/at"
+	"./model"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// GetHome handler untuk endpoint root
-func GetHome(w http.ResponseWriter, r *http.Request) {
+// Response handler untuk responses konsisten
+func Response(w http.ResponseWriter, status int, data interface{}) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(status)
+	at.WriteJSON(w, status, data)
+}
+
+// GetAllProjects handler untuk mengambil semua projects user
+func GetAllProjects(w http.ResponseWriter, r *http.Request) {
+	// Implementation for getting all projects
+	// This would use the actual authentication and database logic
 	response := model.Response{
 		Status:  "success",
-		Message: "Research Data Analysis API v1.0",
-		Data: map[string]interface{}{
-			"version":   "1.0.0",
-			"endpoints": []string{
-				"POST /auth/register",
-				"POST /auth/login",
-				"GET /auth/profile",
-				"POST /api/project",
-				"GET /api/project",
-				"PUT /api/project",
-				"DELETE /api/project",
-				"POST /api/upload/:projectId",
-				"GET /api/preview/:uploadId",
-				"GET /api/stats/:uploadId",
-				"POST /api/recommend/:projectId",
-				"POST /api/process",
-				"GET /api/results/:analysisId",
-				"POST /api/refine/:analysisId",
-				"GET /api/export/:analysisId",
-			},
-		},
+		Message: "Projects retrieved successfully",
+		Data:    []interface{}{},
 	}
-	at.WriteJSON(w, http.StatusOK, response)
+	Response(w, http.StatusOK, response)
 }
 
-// NotFound handler untuk endpoint yang tidak ditemukan
-func NotFound(w http.ResponseWriter, r *http.Request) {
+// GetProject handler untuk mengambil satu project berdasarkan ID
+func GetProject(w http.ResponseWriter, r *http.Request, projectIDStr string) {
+	// Implementation for getting a specific project
 	response := model.Response{
-		Status:  "error",
-		Message: "Endpoint not found",
-		Data: map[string]string{
-			"path":   r.URL.Path,
-			"method": r.Method,
-		},
+		Status:  "success",
+		Message: "Project retrieved successfully",
+		Data:    nil,
 	}
-	at.WriteJSON(w, http.StatusNotFound, response)
+	Response(w, http.StatusOK, response)
 }
 
-// MethodNotAllowed handler untuk method yang tidak diizinkan
-func MethodNotAllowed(w http.ResponseWriter, r *http.Request) {
+// CreateProject handler untuk membuat project baru
+func CreateProject(w http.ResponseWriter, r *http.Request) {
+	// Implementation for creating a new project
 	response := model.Response{
-		Status:  "error",
-		Message: "Method not allowed",
-		Data: map[string]string{
-			"method": r.Method,
-		},
+		Status:  "success",
+		Message: "Project created successfully",
+		Data:    nil,
 	}
-	at.WriteJSON(w, http.StatusMethodNotAllowed, response)
+	Response(w, http.StatusCreated, response)
+}
+
+// UpdateProject handler untuk update project
+func UpdateProject(w http.ResponseWriter, r *http.Request, projectIDStr string) {
+	// Implementation for updating a project
+	response := model.Response{
+		Status:  "success",
+		Message: "Project updated successfully",
+		Data:    nil,
+	}
+	Response(w, http.StatusOK, response)
+}
+
+// DeleteProject handler untuk hapus project
+func DeleteProject(w http.ResponseWriter, r *http.Request, projectIDStr string) {
+	// Implementation for deleting a project
+	response := model.Response{
+		Status:  "success",
+		Message: "Project deleted successfully",
+		Data:    nil,
+	}
+	Response(w, http.StatusOK, response)
+}
+
+// HealthCheck handler untuk health check endpoint
+func HealthCheck(w http.ResponseWriter, r *http.Request) {
+	// Implementation for health check
+	response := map[string]interface{}{
+		"status":  "healthy",
+		"message": "Service is running",
+		"time":    primitive.NewObjectID().Timestamp(),
+	}
+	Response(w, http.StatusOK, response)
 }

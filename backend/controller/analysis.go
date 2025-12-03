@@ -6,11 +6,11 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/research-data-analysis/config"
-	"github.com/research-data-analysis/helper/at"
-	"github.com/research-data-analysis/helper/atdb"
-	"github.com/research-data-analysis/helper/vertexai"
-	"github.com/research-data-analysis/model"
+	"./config"
+	"./helper/at"
+	"./helper/atdb"
+	"./helper/vertexai"
+	"./model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -555,4 +555,26 @@ func extractSummaryFromAI(response string) string {
 	}
 	
 	return response
+}
+
+func getUserIDFromToken(r *http.Request) (primitive.ObjectID, error) {
+	// Get token from Authorization header
+	token := r.Header.Get("Authorization")
+	if token == "" {
+		token = r.Header.Get("Login")
+	}
+	
+	if token == "" {
+		return primitive.NilObjectID, fmt.Errorf("no token found")
+	}
+	
+	// Validate token and get user ID
+	// This would use the actual JWT validation logic
+	// For now, return a mock user ID for testing
+	return primitive.ObjectID{}, fmt.Errorf("token validation not implemented")
+}
+
+func logAudit(userID primitive.ObjectID, action, collection, description string, r *http.Request) {
+	// Log audit trail
+	// Implementation would store audit logs in database
 }

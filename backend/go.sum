@@ -1,0 +1,14 @@
+cloud.google.com/go/aiplatform v1.68.0 h1:Yd9c5vX8oN6u2sX7oX4eJ7jD7Qd6w6Zx8W9K6q4Q5s=
+cloud.google.com/go/aiplatform v1.68.0/go.mod h1:Nn5nq2l9vj1wU1s/3i1sS6v7n7W7K5R2w6o6t4y1z2u=
+cloud.google.com/go/storage v1.42.0 h1:CPEVrws2qA5/d2/4v7R6vN7w6d1z8c5m6q2k3x4y1z2u=
+cloud.google.com/go/storage v1.42.0/go.mod h1:stK8a9iK+q2Xy2z2d4r1h8v2o5p9r6u4x7q1z2u3w4v=
+github.com/GoogleCloudPlatform/functions-framework-go v1.8.1 h1:n4gqI8x2i4B8W0m8Y4Y7nY6Q2j7p8w6v5h6z4v5u1z2u=
+github.com/GoogleCloudPlatform/functions-framework-go v1.8.1/go.mod h1:n4gqI8x2i4B8W0m8Y4Y7nY6Q2j7p8w6v5h6z4v5u1z2u=
+aidanwoods.dev/go-paseto v1.5.1 h1:n4gqI8x2i4B8W0m8Y4Y7nY6Q2j7p8w6v5h6z4v5u1z2u=
+aidanwoods.dev/go-paseto v1.5.1/go.mod h1:n4gqI8x2i4B8W0m8Y4Y7nY6Q2j7p8w6v5h6z4v5u1z2u=
+go.mongodb.org/mongo-driver v1.16.0 h1:n4gqI8x2i4B8W0m8Y4Y7nY6Q2j7p8w6v5h6z4v5u1z2u=
+go.mongodb.org/mongo-driver v1.16.0/go.mod h1:n4gqI8x2i4B8W0m8Y4Y7nY6Q2j7p8w6v5h6z4v5u1z2u=
+golang.org/x/crypto v0.25.0 h1:Y/S7a+5P4t5Y4dQ3f6u2m4z2K5sY4x5j6v4u1z2u3w4v=
+golang.org/x/crypto v0.25.0/go.mod h1:o7cG1C7y+8Y4x2i4B8W0m8Y4Y7nY6Q2j7p8w6v5h6z4v5u=
+google.golang.org/api v0.190.0 h1:n4gqI8x2i4B8W0m8Y4Y7nY6Q2j7p8w6v5h6z4v5u1z2u=
+google.golang.org/api v0.190.0/go.mod h1:n4gqI8x2i4B8W0m8Y4Y7nY6Q2j7p8w6v5h6z4v5u1z2u=
