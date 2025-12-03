@@ -76,8 +76,8 @@ func getAccessToken() (string, error) {
 
 // GenerateContent memanggil Vertex AI Gemini untuk generate content
 func GenerateContent(prompt string) (string, error) {
-	projectID := config.GCPProjectID
-	region := config.VertexAIRegion
+	projectID := config.GetGCPProjectID()
+	region := config.GetVertexAIRegion()
 	model := "gemini-2.0-flash-exp"
 
 	url := fmt.Sprintf(
