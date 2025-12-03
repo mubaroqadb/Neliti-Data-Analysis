@@ -1,6 +1,7 @@
 package route
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/research-data-analysis/config"
@@ -15,9 +16,31 @@ func URL(w http.ResponseWriter, r *http.Request) {
 		return // Preflight request
 	}
 	
-	// Load environment variables
-	config.SetEnv()
-
+	// Load configuration di awal
+	cfg := config.LoadConfig()
+	
+	// Health check endpoint untuk monitoring
+	if r.Method == "GET" && r.URL.Path == "/health" {
+		if err := config.ConfigurationHealthCheck(); err != nil {
+			http.Error(w, "Service Unavailable", http.StatusServiceUnavailable)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`{"status": "healthy", "environment": "` + cfg.App.Environment + `"}`))
+		return
+	}
+	
+	// Config info endpoint untuk debugging (hanya di development)
+	if r.Method == "GET" && r.URL.Path == "/config" {
+		if !cfg.App.Debug {
+			http.Error(w, "Not Found", http.StatusNotFound)
+			return
+		}
+		config.PrintConfigInfo()
+		return
+	}
+	
 	method := r.Method
 	path := r.URL.Path
 
