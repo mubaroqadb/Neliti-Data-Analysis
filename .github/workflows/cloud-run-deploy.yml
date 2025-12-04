@@ -25,19 +25,22 @@ jobs:
         project_id: neliti-480014
         workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
         service_account: github-actions-sa@neliti-480014.iam.gserviceaccount.com
+        create_credentials_file: true
+        export_environment_variables: true
 
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v2
       with:
         project_id: neliti-480014
 
+    - name: Configure Docker authentication
+      run: |
+        echo $GOOGLE_APPLICATION_CREDENTIALS | docker login -u _json_key --password-stdin https://asia-southeast1-docker.pkg.dev
+
     - name: Build and push Docker image
       run: |
         cd backend
         docker build -t asia-southeast1-docker.pkg.dev/neliti-480014/research-repo/research-backend:latest .
-        
-        # Use gcloud to push with current authentication
-        gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://asia-southeast1-docker.pkg.dev
         docker push asia-southeast1-docker.pkg.dev/neliti-480014/research-repo/research-backend:latest
 
     - name: Deploy to Cloud Run
