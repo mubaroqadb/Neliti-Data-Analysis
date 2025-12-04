@@ -23,7 +23,8 @@ jobs:
       id: 'auth'
       uses: 'google-github-actions/auth@v2'
       with:
-        credentials_json: '${{ secrets.GOOGLE_CREDENTIALS_BASE64 }}'
+        workload_identity_provider: 'projects/118539834796/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions-provider-v2'
+        service_account: 'github-actions-sa-v2@neliti-480014.iam.gserviceaccount.com'
 
     - name: Debug GCP credentials
       env:
