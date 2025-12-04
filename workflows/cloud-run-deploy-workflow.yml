@@ -50,5 +50,4 @@ jobs:
           --set-env-vars PUBLICKEY="${{ secrets.PUBLICKEY }}" \
           --set-env-vars JWT_SECRET="${{ secrets.JWT_SECRET }}" \
           --set-env-vars GCP_PROJECT_ID="${{ secrets.GCP_PROJECT_ID }}" \
-          --set-env-vars ENVIRONMENT=production \
-          --service-account github-actions-sa@neliti-480014.iam.gserviceaccount.com
+          --set-env-vars ENVIRONMENT=production
