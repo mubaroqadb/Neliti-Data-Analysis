@@ -1,4 +1,4 @@
-name: Deploy to Cloud Run - Fixed IAM
+name: Deploy to Cloud Run - Using GitHub Actions SA
 
 on:
   push:
