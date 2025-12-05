@@ -14,10 +14,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// MongoDB and helper functions tersedia di analysis.go
-// - getMongoDB()
-// - getUserIDFromToken()
-
 // ExportResults handler untuk mengekspor hasil analisis
 func ExportResults(w http.ResponseWriter, r *http.Request, analysisIDStr string) {
 	userID, err := getUserIDFromToken(r)
@@ -52,7 +48,7 @@ func ExportResults(w http.ResponseWriter, r *http.Request, analysisIDStr string)
 		})
 		return
 	}
-	
+
 	analysis, err := atdb.GetOneDoc[model.Analysis](mongoDB, "analyses", bson.M{"_id": analysisID})
 	if err != nil {
 		at.WriteJSON(w, http.StatusNotFound, model.Response{
@@ -180,12 +176,12 @@ func exportJSON(w http.ResponseWriter, project model.Project, analysis model.Ana
 			"variables":     project.Variables,
 		},
 		"analysis": map[string]interface{}{
-			"id":          analysis.ID.Hex(),
-			"iteration":   analysis.Iteration,
-			"status":      analysis.Status,
-			"results":     analysis.Results,
-			"summary":     analysis.Summary,
-			"created_at":  analysis.CreatedAt,
+			"id":           analysis.ID.Hex(),
+			"iteration":    analysis.Iteration,
+			"status":       analysis.Status,
+			"results":      analysis.Results,
+			"summary":      analysis.Summary,
+			"created_at":   analysis.CreatedAt,
 			"completed_at": analysis.CompletedAt,
 		},
 	}
@@ -203,4 +199,3 @@ func exportJSON(w http.ResponseWriter, project model.Project, analysis model.Ana
 	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=\"analysis_export_%s.json\"", analysis.ID.Hex()))
 	w.Write(jsonData)
 }
-
