@@ -20,9 +20,9 @@ type User struct {
 	ID            primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
 	Email         string             `json:"email" bson:"email"`
 	Password      string             `json:"-" bson:"password"`
-	FullName      string             `json:"full_name" bson:"full_name"`
+	FullName      string             `json:"fullName" bson:"full_name"`
 	Institution   string             `json:"institution" bson:"institution"`
-	ResearchField string             `json:"research_field" bson:"research_field"`
+	ResearchField string             `json:"researchField" bson:"research_field"`
 	CreatedAt     time.Time          `json:"created_at" bson:"created_at"`
 	UpdatedAt     time.Time          `json:"updated_at" bson:"updated_at"`
 }
@@ -83,11 +83,11 @@ type Recommendation struct {
 
 // MethodResult untuk hasil analisis
 type MethodResult struct {
-	Method        string                 `json:"method" bson:"method"`
-	RawOutput     map[string]interface{} `json:"raw_output" bson:"raw_output"`
-	Interpretation string                `json:"interpretation" bson:"interpretation"`
-	EffectSize    string                 `json:"effect_size,omitempty" bson:"effect_size,omitempty"`
-	Conclusion    string                 `json:"conclusion" bson:"conclusion"`
+	Method         string                 `json:"method" bson:"method"`
+	RawOutput      map[string]interface{} `json:"raw_output" bson:"raw_output"`
+	Interpretation string                 `json:"interpretation" bson:"interpretation"`
+	EffectSize     string                 `json:"effect_size,omitempty" bson:"effect_size,omitempty"`
+	Conclusion     string                 `json:"conclusion" bson:"conclusion"`
 }
 
 // Figure untuk gambar/chart hasil analisis
@@ -138,9 +138,9 @@ type LoginRequest struct {
 type RegisterRequest struct {
 	Email         string `json:"email"`
 	Password      string `json:"password"`
-	FullName      string `json:"full_name"`
+	FullName      string `json:"fullName"`
 	Institution   string `json:"institution"`
-	ResearchField string `json:"research_field"`
+	ResearchField string `json:"researchField"`
 }
 
 // ProjectRequest untuk request project
