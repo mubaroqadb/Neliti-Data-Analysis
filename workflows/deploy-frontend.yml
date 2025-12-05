@@ -31,16 +31,17 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
         
-      - name: Copy frontend files to root
+      - name: Move frontend files to root
         run: |
-          mkdir -p ./dist
-          cp -r ./frontend/* ./dist/
-          cp ./.nojekyll ./dist/
+          # Move all files from frontend directory to root
+          cp -r ./frontend/* ./
+          # Also copy the .nojekyll file to prevent Jekyll processing
+          cp ./.nojekyll ./
           
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'
+          path: '.'
           
       - name: Deploy to GitHub Pages
         id: deployment
