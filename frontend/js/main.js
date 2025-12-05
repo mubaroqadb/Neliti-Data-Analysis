@@ -172,12 +172,12 @@ window.handleRegister = async function(event) {
     
     postJSON(
         `${API_BASE_URL}/auth/register`,
-        { 
-            email, 
-            password, 
-            full_name: fullName, 
-            institution, 
-            research_field: researchField 
+        {
+            email,
+            password,
+            fullName: fullName,
+            institution,
+            researchField: researchField
         },
         (response) => {
             hideLoading();
