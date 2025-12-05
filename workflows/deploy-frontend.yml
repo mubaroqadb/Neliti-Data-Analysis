@@ -28,21 +28,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-        
-      - name: Move frontend files to root
-        run: |
-          # Move all files from frontend directory to root
-          cp -r ./frontend/* ./
-          # Also copy the .nojekyll file to prevent Jekyll processing
-          cp ./.nojekyll ./
-          
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          path: '.'
+          node-version: '18'
           
+      - name: Install gh-pages package
+        run: npm install -g gh-pages
+        
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        run: |
+          # Copy frontend files to a temporary directory
+          mkdir -p temp-deploy
+          cp -r ./frontend/* ./temp-deploy/
+          
+          # Deploy using gh-pages
+          gh-pages --dist temp-deploy/ --dotfiles --message "Deploy frontend to GitHub Pages"
+          
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
