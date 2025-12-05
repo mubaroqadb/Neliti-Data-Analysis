@@ -5,8 +5,10 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/research-data-analysis/config"
 	"github.com/research-data-analysis/helper/at"
 	"github.com/research-data-analysis/helper/atdb"
+	"github.com/research-data-analysis/helper/watoken"
 	"github.com/research-data-analysis/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -403,13 +405,32 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	// Set the ID for response
 	newUser.ID = userID
 
+	// Generate PASETO token
+	privateKey := config.GetConfig().Auth.PrivateKey
+	token, err := watoken.EncodeforHours(
+		newUser.Email,
+		newUser.FullName,
+		privateKey,
+		24, // 24 hours expiration
+	)
+	if err != nil {
+		Response(w, http.StatusInternalServerError, model.Response{
+			Status:  "error",
+			Message: "Failed to generate token",
+		})
+		return
+	}
+
 	// Remove password from response
 	newUser.Password = ""
 
 	Response(w, http.StatusCreated, model.Response{
 		Status:  "success",
 		Message: "User registered successfully",
-		Data:    newUser,
+		Data: map[string]interface{}{
+			"user":  newUser,
+			"token": token,
+		},
 	})
 }
 
@@ -454,8 +475,21 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Generate token (in production, use proper JWT/PASETO generation)
-	token := "generated-token-placeholder" // In production, generate actual token
+	// Generate PASETO token
+	privateKey := config.GetConfig().Auth.PrivateKey
+	token, err := watoken.EncodeforHours(
+		user.Email,
+		user.FullName,
+		privateKey,
+		24, // 24 hours expiration
+	)
+	if err != nil {
+		Response(w, http.StatusInternalServerError, model.Response{
+			Status:  "error",
+			Message: "Failed to generate token",
+		})
+		return
+	}
 
 	// Remove password from response
 	user.Password = ""
