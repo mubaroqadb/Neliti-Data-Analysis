@@ -205,7 +205,7 @@ const API_BASE_URL = 'https://asia-southeast1-YOUR_PROJECT_ID.cloudfunctions.net
 Tambahkan secrets di **Settings > Secrets and variables > Actions**:
 
 | Secret Name | Deskripsi |
-|------------|----------|
+|------------|-----------|
 | `GOOGLE_CREDENTIALS` | Isi dari key.json |
 | `MONGOSTRING` | MongoDB connection string |
 | `PRIVATEKEY` | Ed25519 private key (hex) |
@@ -215,7 +215,7 @@ Tambahkan secrets di **Settings > Secrets and variables > Actions**:
 Tambahkan variables:
 
 | Variable Name | Deskripsi |
-|--------------|----------|
+|--------------|-----------|
 | `GCP_PROJECT_ID` | ID project GCP |
 | `GCP_REGION` | Region (default: asia-southeast1) |
 | `VERTEXAI_REGION` | Region Vertex AI |
