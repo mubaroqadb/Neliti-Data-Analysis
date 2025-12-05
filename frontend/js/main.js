@@ -35,7 +35,7 @@ import {
 } from 'https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.3/url.js';
 
 // ===== Configuration =====
-const API_BASE_URL = 'https://asia-southeast1-YOUR_PROJECT_ID.cloudfunctions.net/ResearchDataAnalysis';
+const API_BASE_URL = 'https://research-data-backend-118539834796.asia-southeast1.run.app';
 
 // ===== State Management =====
 let currentUser = null;
