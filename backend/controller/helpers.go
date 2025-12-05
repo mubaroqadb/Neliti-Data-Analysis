@@ -24,6 +24,7 @@ func getUserIDFromToken(r *http.Request) (primitive.ObjectID, error) {
 	// Get token from Authorization header
 	authHeader := r.Header.Get("Authorization")
 	if authHeader == "" {
+		fmt.Printf("No authorization header found\n")
 		return primitive.NilObjectID, fmt.Errorf("no authorization header")
 	}
 
@@ -33,18 +34,26 @@ func getUserIDFromToken(r *http.Request) (primitive.ObjectID, error) {
 		tokenString = authHeader[7:]
 	}
 
+	// Debug log for development
+	fmt.Printf("Token string length: %d\n", len(tokenString))
+
 	// Decode token using public key
 	publicKey := config.GetConfig().Auth.PublicKey
+	fmt.Printf("Public key length: %d\n", len(publicKey))
+
 	payload, err := watoken.Decode(publicKey, tokenString)
 	if err != nil {
+		fmt.Printf("Token decode error: %v\n", err)
 		return primitive.NilObjectID, fmt.Errorf("invalid token: %v", err)
 	}
 
 	// Convert user ID from string to ObjectID
 	userID, err := primitive.ObjectIDFromHex(payload.Id)
 	if err != nil {
+		fmt.Printf("Invalid user ID in token: %v\n", err)
 		return primitive.NilObjectID, fmt.Errorf("invalid user ID in token: %v", err)
 	}
 
+	fmt.Printf("Successfully extracted user ID: %s\n", userID.Hex())
 	return userID, nil
 }

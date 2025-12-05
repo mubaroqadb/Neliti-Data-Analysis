@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -407,19 +408,27 @@ func Register(w http.ResponseWriter, r *http.Request) {
 
 	// Generate PASETO token
 	privateKey := config.GetConfig().Auth.PrivateKey
+
+	// Debug log for development
+	fmt.Printf("Generating token with private key length: %d\n", len(privateKey))
+	fmt.Printf("User ID: %s, User Name: %s\n", newUser.ID.Hex(), newUser.FullName)
+
 	token, err := watoken.EncodeforHours(
-		newUser.Email,
+		newUser.ID.Hex(),
 		newUser.FullName,
 		privateKey,
 		24, // 24 hours expiration
 	)
 	if err != nil {
+		fmt.Printf("Token generation error: %v\n", err)
 		Response(w, http.StatusInternalServerError, model.Response{
 			Status:  "error",
 			Message: "Failed to generate token",
 		})
 		return
 	}
+
+	fmt.Printf("Token generated successfully\n")
 
 	// Remove password from response
 	newUser.Password = ""
@@ -477,19 +486,27 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	// Generate PASETO token
 	privateKey := config.GetConfig().Auth.PrivateKey
+
+	// Debug log for development
+	fmt.Printf("Login - Generating token with private key length: %d\n", len(privateKey))
+	fmt.Printf("Login - User ID: %s, User Name: %s\n", user.ID.Hex(), user.FullName)
+
 	token, err := watoken.EncodeforHours(
-		user.Email,
+		user.ID.Hex(),
 		user.FullName,
 		privateKey,
 		24, // 24 hours expiration
 	)
 	if err != nil {
+		fmt.Printf("Login - Token generation error: %v\n", err)
 		Response(w, http.StatusInternalServerError, model.Response{
 			Status:  "error",
 			Message: "Failed to generate token",
 		})
 		return
 	}
+
+	fmt.Printf("Login - Token generated successfully\n")
 
 	// Remove password from response
 	user.Password = ""
